@@ -19,7 +19,7 @@ import { PaymentsModule } from './payments/payments.module.js';
       pinoHttp: {
         transport:
           process.env.NODE_ENV !== 'production'
-            ? { target: 'pino-pretty' }
+            ? { target: 'pino-pretty', options: { colorize: true } }
             : undefined,
         level: process.env.LOG_LEVEL || 'info',
       },
