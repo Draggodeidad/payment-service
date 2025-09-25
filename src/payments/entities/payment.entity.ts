@@ -1,40 +1,37 @@
-// import {
-//   Entity,
-//   PrimaryGeneratedColumn,
-//   Column,
-//   CreateDateColumn,
-//   UpdateDateColumn,
-// } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-// @Entity('payments')
+@Entity('payments')
 export class Payment {
-  // @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  // @Column()
-  stripePaymentIntentId!: string;
+  @Column({ name: 'stripe_payment_id' })
+  stripePaymentId!: string;
 
-  // @Column()
-  stripeCustomerId!: string;
+  @Column({ name: 'user_id' })
+  userId!: string;
 
-  // @Column('int')
+  @Column('int')
   amount!: number;
 
-  // @Column()
+  @Column()
   currency!: string;
 
-  // @Column()
-  status!: string; // pending, succeeded, failed, canceled
+  @Column()
+  status!: 'pending' | 'succeeded' | 'failed' | 'refunded';
 
-  // @Column({ nullable: true })
+  @Column({ nullable: true })
   description?: string;
 
-  // @Column({ nullable: true })
-  paymentMethodId?: string;
-
-  // @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt!: Date;
 
-  // @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt!: Date;
 }

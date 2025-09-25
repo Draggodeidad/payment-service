@@ -4,6 +4,7 @@ import { AppModule } from './app.module.js';
 import helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { raw } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
@@ -13,6 +14,9 @@ async function bootstrap() {
   // Seguridad y CORS
   app.enableCors({ origin: true, credentials: true });
   app.use(helmet());
+
+  // Stripe Webhook requiere el cuerpo sin parsear para validar la firma
+  app.use('/api/v1/payments/webhook', raw({ type: '*/*' }));
 
   // Validación global
   app.useGlobalPipes(

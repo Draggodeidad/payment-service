@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { LoggerModule } from 'nestjs-pino';
-// import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PaymentsModule } from './payments/payments.module.js';
@@ -11,6 +11,13 @@ import { Payment } from './payments/entities/payment.entity.js';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      url: process.env.DATABASE_URL,
+      entities: [Payment],
+      synchronize: process.env.NODE_ENV !== 'production', // Solo en desarrollo
+      logging: process.env.NODE_ENV === 'development',
+    }),
     ThrottlerModule.forRoot([
       {
         ttl: 60_000,
